@@ -43,3 +43,7 @@ body {
   margin-left: 20px;
   text-align: center;
 }
+
+.taskCompleted {
+  background-color: green;
+}

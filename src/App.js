@@ -1,5 +1,6 @@
 import styles from "./App.module.css";
 import { useState } from "react";
+import Task from './Task'
 
 function App() {
   /*useState variables*/
@@ -11,11 +12,16 @@ function App() {
   };
 
   const addTask = () => {
-    const task = {
-      id: todoList.length === 0 ? 1 : todoList[todoList.length - 1].id + 1,
-      taskName: newTask,
-    };
-    setTodoList([...todoList, task]);
+    if (newTask !== '') {
+      const task = {
+        id: todoList.length === 0 ? 1 : todoList[todoList.length - 1].id + 1,
+        taskName: newTask,
+        isCompleted: false
+      };
+      setTodoList([...todoList, task]);
+    } else {
+      return alert('Task Empty')
+    }
   };
 
   const deleteTask = (id) => {
@@ -32,6 +38,18 @@ function App() {
     );
   };
 
+  const completedTask = (id) => {
+    setTodoList(
+      todoList.map((task) => {
+        if (task.id === id) {
+          return {...task, isCompleted: true}
+        } else {
+          return task
+        }
+      })
+    )
+  }
+
   return (
     <div className={styles.App}>
       <div className={styles.addTask}>
@@ -41,12 +59,7 @@ function App() {
       <div className={styles.list}>
         {todoList.map((task, key) => {
           return (
-            <div className={styles.task}>
-              <h1 key={task.id}>
-                {task.taskName}
-              </h1>{" "}
-              <button className={styles.taskButton} onClick={() => deleteTask(task.id)}> X </button>
-            </div>
+            <Task taskName={task.taskName} id={task.id} isCompleted={task.isCompleted} deleteTask={deleteTask} completedTask={completedTask}/>
           );
         })}
       </div>
